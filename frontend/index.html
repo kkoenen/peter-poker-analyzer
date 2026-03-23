@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Peter Poker</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <header class="app-header">
+      <h1>Peter Poker</h1>
+      <span id="game-badge" class="game-badge hidden"></span>
+    </header>
+
+    <main class="main-content">
+
+      <!-- ── Setup ─────────────────────────────────────────── -->
+      <section id="setup-section" class="panel">
+        <h2 class="panel-label">Table Setup</h2>
+        <p class="panel-hint">How many players are at the table?</p>
+        <div class="counter-row">
+          <button class="counter-btn" id="players-minus" aria-label="Fewer players">−</button>
+          <span id="players-display" class="counter-value">2</span>
+          <button class="counter-btn" id="players-plus" aria-label="More players">+</button>
+        </div>
+        <button class="btn-primary" id="start-btn">Start Hand</button>
+      </section>
+
+      <!-- ── Hole cards ─────────────────────────────────────── -->
+      <section id="hole-section" class="panel hidden">
+        <h2 class="panel-label">Your Hole Cards</h2>
+        <div class="cards-row">
+          <div class="card-slot" data-group="hole" data-index="0" role="button" aria-label="Select hole card 1">
+            <span class="card-plus">+</span>
+          </div>
+          <div class="card-slot" data-group="hole" data-index="1" role="button" aria-label="Select hole card 2">
+            <span class="card-plus">+</span>
+          </div>
+        </div>
+        <button class="btn-primary hidden" id="calc-preflop-btn">Calculate Pre-flop Odds</button>
+      </section>
+
+      <!-- ── Pre-flop odds ──────────────────────────────────── -->
+      <div id="preflop-odds" class="odds-panel hidden"></div>
+
+      <!-- ── Flop ───────────────────────────────────────────── -->
+      <section id="flop-section" class="panel hidden">
+        <h2 class="panel-label">Flop</h2>
+        <div class="cards-row">
+          <div class="card-slot" data-group="flop" data-index="0" role="button" aria-label="Select flop card 1">
+            <span class="card-plus">+</span>
+          </div>
+          <div class="card-slot" data-group="flop" data-index="1" role="button" aria-label="Select flop card 2">
+            <span class="card-plus">+</span>
+          </div>
+          <div class="card-slot" data-group="flop" data-index="2" role="button" aria-label="Select flop card 3">
+            <span class="card-plus">+</span>
+          </div>
+        </div>
+        <div class="players-remaining">
+          <span class="players-remaining-label">Players still in hand</span>
+          <div class="counter-row counter-row-sm">
+            <button class="counter-btn" id="players-minus-flop" aria-label="Fewer players">−</button>
+            <span id="players-display-flop" class="counter-value">2</span>
+            <button class="counter-btn" id="players-plus-flop" aria-label="More players">+</button>
+          </div>
+        </div>
+        <button class="btn-primary hidden" id="calc-flop-btn">Calculate Post-flop Odds</button>
+      </section>
+
+      <!-- ── Post-flop odds ─────────────────────────────────── -->
+      <div id="postflop-odds" class="odds-panel hidden"></div>
+
+      <!-- ── Turn ───────────────────────────────────────────── -->
+      <section id="turn-section" class="panel hidden">
+        <h2 class="panel-label">Turn</h2>
+        <div class="cards-row">
+          <div class="card-slot" data-group="turn" data-index="0" role="button" aria-label="Select turn card">
+            <span class="card-plus">+</span>
+          </div>
+        </div>
+        <div class="players-remaining">
+          <span class="players-remaining-label">Players still in hand</span>
+          <div class="counter-row counter-row-sm">
+            <button class="counter-btn" id="players-minus-turn" aria-label="Fewer players">−</button>
+            <span id="players-display-turn" class="counter-value">2</span>
+            <button class="counter-btn" id="players-plus-turn" aria-label="More players">+</button>
+          </div>
+        </div>
+        <button class="btn-primary hidden" id="calc-turn-btn">Calculate Turn Odds</button>
+      </section>
+
+      <!-- ── Post-turn odds ─────────────────────────────────── -->
+      <div id="postturn-odds" class="odds-panel hidden"></div>
+
+      <!-- ── River ──────────────────────────────────────────── -->
+      <section id="river-section" class="panel hidden">
+        <h2 class="panel-label">River</h2>
+        <div class="cards-row">
+          <div class="card-slot" data-group="river" data-index="0" role="button" aria-label="Select river card">
+            <span class="card-plus">+</span>
+          </div>
+        </div>
+        <div class="players-remaining">
+          <span class="players-remaining-label">Players still in hand</span>
+          <div class="counter-row counter-row-sm">
+            <button class="counter-btn" id="players-minus-river" aria-label="Fewer players">−</button>
+            <span id="players-display-river" class="counter-value">2</span>
+            <button class="counter-btn" id="players-plus-river" aria-label="More players">+</button>
+          </div>
+        </div>
+        <button class="btn-primary hidden" id="calc-river-btn">Calculate Final Odds</button>
+      </section>
+
+      <!-- ── River odds + new hand ──────────────────────────── -->
+      <div id="river-odds" class="odds-panel hidden"></div>
+
+      <div id="new-hand-section" class="panel hidden">
+        <button class="btn-secondary" id="new-hand-btn">New Hand</button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Card picker bottom sheet ──────────────────────────── -->
+  <div id="picker-overlay" class="picker-overlay hidden" role="dialog" aria-modal="true" aria-label="Card picker">
+    <div id="picker-sheet" class="picker-sheet">
+      <div class="sheet-handle"></div>
+      <h3 id="picker-title" class="picker-title">Select Card</h3>
+
+      <!-- Step 1: suit -->
+      <div id="suit-step">
+        <p class="step-label">Choose suit</p>
+        <div class="suit-grid">
+          <button class="suit-btn black" data-suit="s" aria-label="Spades">♠</button>
+          <button class="suit-btn red"   data-suit="h" aria-label="Hearts">♥</button>
+          <button class="suit-btn red"   data-suit="d" aria-label="Diamonds">♦</button>
+          <button class="suit-btn black" data-suit="c" aria-label="Clubs">♣</button>
+        </div>
+      </div>
+
+      <!-- Step 2: rank -->
+      <div id="rank-step" class="hidden">
+        <button class="back-link" id="picker-back">← Back</button>
+        <p class="step-label" id="rank-step-label">Choose rank</p>
+        <div class="rank-grid" id="rank-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

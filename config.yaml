@@ -1,0 +1,26 @@
+app:
+  name: "Peter Poker Analyzer"
+  base_url: "peter.keeskoenen.com"
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+
+poker:
+  default_players: 2
+  min_players: 2
+  max_players: 9
+  monte_carlo_simulations: 6000   # balance: ~300ms per call
+
+suggestion:
+  # Multipliers relative to break-even (1/num_players)
+  bet_multiplier: 1.5             # win_pct > 1.5/n  → BET
+  check_multiplier: 0.85          # win_pct > 0.85/n → CHECK, else FOLD
+
+rag:
+  green_threshold: 55             # win% >= this → green
+  amber_threshold: 33             # win% >= this → amber, else red
+
+vision:
+  enabled: false
+  model: "claude-haiku-4-5-20251001"
