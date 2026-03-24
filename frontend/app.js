@@ -138,6 +138,10 @@ function renderError(panelId, msg) {
 }
 
 // ─── Stage flow ───────────────────────────────────────────────────────────────
+function isVisible(id) {
+  return !$(id).classList.contains('hidden');
+}
+
 async function calcPreflop() {
   hide($('calc-preflop-btn'));
   showLoading('preflop-odds');
@@ -158,6 +162,7 @@ async function calcFlop() {
   try {
     const odds = await apiOdds(state.flopCards);
     renderOdds('postflop-odds', odds, 'Deal Turn →', revealTurn);
+    show($('recalc-flop-btn'));
   } catch { renderError('postflop-odds', 'Calculation failed — check your connection.'); }
 }
 
@@ -172,6 +177,7 @@ async function calcTurn() {
   try {
     const odds = await apiOdds([...state.flopCards, state.turnCard]);
     renderOdds('postturn-odds', odds, 'Deal River →', revealRiver);
+    show($('recalc-turn-btn'));
   } catch { renderError('postturn-odds', 'Calculation failed — check your connection.'); }
 }
 
@@ -186,9 +192,46 @@ async function calcRiver() {
   try {
     const odds = await apiOdds([...state.flopCards, state.turnCard, state.riverCard]);
     renderOdds('river-odds', odds, null, null);
+    show($('recalc-river-btn'));
     show($('new-hand-section'));
     scrollTo($('new-hand-section'));
   } catch { renderError('river-odds', 'Calculation failed — check your connection.'); }
+}
+
+// ─── Recalculate ──────────────────────────────────────────────────────────────
+async function recalcRiver() {
+  showLoading('river-odds');
+  try {
+    const odds = await apiOdds([...state.flopCards, state.turnCard, state.riverCard]);
+    renderOdds('river-odds', odds, null, null);
+    show($('recalc-river-btn'));
+  } catch { renderError('river-odds', 'Calculation failed — check your connection.'); }
+}
+
+async function recalcTurn() {
+  showLoading('postturn-odds');
+  try {
+    const odds = await apiOdds([...state.flopCards, state.turnCard]);
+    renderOdds('postturn-odds', odds, isVisible('river-section') ? null : 'Deal River →', isVisible('river-section') ? null : revealRiver);
+    show($('recalc-turn-btn'));
+  } catch { renderError('postturn-odds', 'Calculation failed — check your connection.'); return; }
+  if (isVisible('river-section') && state.riverCard) {
+    refreshPlayerDisplay();
+    await recalcRiver();
+  }
+}
+
+async function recalcFlop() {
+  showLoading('postflop-odds');
+  try {
+    const odds = await apiOdds(state.flopCards);
+    renderOdds('postflop-odds', odds, isVisible('turn-section') ? null : 'Deal Turn →', isVisible('turn-section') ? null : revealTurn);
+    show($('recalc-flop-btn'));
+  } catch { renderError('postflop-odds', 'Calculation failed — check your connection.'); return; }
+  if (isVisible('turn-section') && state.turnCard) {
+    refreshPlayerDisplay();
+    await recalcTurn();
+  }
 }
 
 // ─── Card picker ──────────────────────────────────────────────────────────────
@@ -259,9 +302,9 @@ function newHand() {
 
   const toHide = [
     'hole-section','calc-preflop-btn','preflop-odds',
-    'flop-section','calc-flop-btn','postflop-odds',
-    'turn-section','calc-turn-btn','postturn-odds',
-    'river-section','calc-river-btn','river-odds',
+    'flop-section','calc-flop-btn','postflop-odds','recalc-flop-btn',
+    'turn-section','calc-turn-btn','postturn-odds','recalc-turn-btn',
+    'river-section','calc-river-btn','river-odds','recalc-river-btn',
     'new-hand-section',
   ];
   toHide.forEach(id => hide($(id)));
@@ -347,6 +390,11 @@ function wireEvents() {
   $('calc-flop-btn').addEventListener('click', calcFlop);
   $('calc-turn-btn').addEventListener('click', calcTurn);
   $('calc-river-btn').addEventListener('click', calcRiver);
+
+  // Recalc buttons
+  $('recalc-flop-btn').addEventListener('click', recalcFlop);
+  $('recalc-turn-btn').addEventListener('click', recalcTurn);
+  $('recalc-river-btn').addEventListener('click', recalcRiver);
 
   // New hand
   $('new-hand-btn').addEventListener('click', newHand);

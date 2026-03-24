@@ -64,10 +64,13 @@
         </div>
         <div class="players-remaining">
           <span class="players-remaining-label">Players still in hand</span>
-          <div class="counter-row counter-row-sm">
-            <button class="counter-btn" id="players-minus-flop" aria-label="Fewer players">−</button>
-            <span id="players-display-flop" class="counter-value">2</span>
-            <button class="counter-btn" id="players-plus-flop" aria-label="More players">+</button>
+          <div class="players-remaining-row">
+            <div class="counter-row counter-row-sm">
+              <button class="counter-btn" id="players-minus-flop" aria-label="Fewer players">−</button>
+              <span id="players-display-flop" class="counter-value">2</span>
+              <button class="counter-btn" id="players-plus-flop" aria-label="More players">+</button>
+            </div>
+            <button class="btn-recalc hidden" id="recalc-flop-btn">↻ Recalculate</button>
           </div>
         </div>
         <button class="btn-primary hidden" id="calc-flop-btn">Calculate Post-flop Odds</button>
@@ -86,10 +89,13 @@
         </div>
         <div class="players-remaining">
           <span class="players-remaining-label">Players still in hand</span>
-          <div class="counter-row counter-row-sm">
-            <button class="counter-btn" id="players-minus-turn" aria-label="Fewer players">−</button>
-            <span id="players-display-turn" class="counter-value">2</span>
-            <button class="counter-btn" id="players-plus-turn" aria-label="More players">+</button>
+          <div class="players-remaining-row">
+            <div class="counter-row counter-row-sm">
+              <button class="counter-btn" id="players-minus-turn" aria-label="Fewer players">−</button>
+              <span id="players-display-turn" class="counter-value">2</span>
+              <button class="counter-btn" id="players-plus-turn" aria-label="More players">+</button>
+            </div>
+            <button class="btn-recalc hidden" id="recalc-turn-btn">↻ Recalculate</button>
           </div>
         </div>
         <button class="btn-primary hidden" id="calc-turn-btn">Calculate Turn Odds</button>
@@ -108,10 +114,13 @@
         </div>
         <div class="players-remaining">
           <span class="players-remaining-label">Players still in hand</span>
-          <div class="counter-row counter-row-sm">
-            <button class="counter-btn" id="players-minus-river" aria-label="Fewer players">−</button>
-            <span id="players-display-river" class="counter-value">2</span>
-            <button class="counter-btn" id="players-plus-river" aria-label="More players">+</button>
+          <div class="players-remaining-row">
+            <div class="counter-row counter-row-sm">
+              <button class="counter-btn" id="players-minus-river" aria-label="Fewer players">−</button>
+              <span id="players-display-river" class="counter-value">2</span>
+              <button class="counter-btn" id="players-plus-river" aria-label="More players">+</button>
+            </div>
+            <button class="btn-recalc hidden" id="recalc-river-btn">↻ Recalculate</button>
           </div>
         </div>
         <button class="btn-primary hidden" id="calc-river-btn">Calculate Final Odds</button>

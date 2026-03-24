@@ -449,6 +449,30 @@ body {
   margin-bottom: 8px;
 }
 
+.players-remaining-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-recalc {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--surface-3);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.btn-recalc:active {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
 .counter-row-sm {
   gap: 14px;
   margin-bottom: 0;
